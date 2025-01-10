@@ -5,10 +5,9 @@ on:
    workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
-
 
 jobs:
    update:
@@ -31,6 +30,10 @@ jobs:
        - name: 运行更新脚本
          id: run_script
          run: mkdir datas || cd datas && python action.py
+       - name: 提交与推送更改
+         run: |
+            git add *
+            git diff-index --quiet HEAD || git commit -m "update data" && git push
        - name: Setup Pages
          uses: actions/configure-pages@v5
        - name: Upload artifact
