@@ -1,11 +1,11 @@
-name: Check Minecraft Version
+name: Update Data
 on:
    schedule:
     - cron:  '0/30 * * * *'
    workflow_dispatch:
       
 jobs:
-   check_mcv:
+   update:
       runs-on: ubuntu-latest
       steps:
        - name: 签出储存库
@@ -22,7 +22,6 @@ jobs:
          id: run_script
          run: python action.py
        - name: 提交与推送更改
-         if: ${{ env.require_update }}
          run: |
             git add *
-            git diff-index --quiet HEAD || git commit -S -m "preloaded new version" && git push
+            git diff-index --quiet HEAD || git commit -S -m "update data" && git push
