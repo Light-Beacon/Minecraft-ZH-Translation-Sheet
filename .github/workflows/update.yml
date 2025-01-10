@@ -30,7 +30,6 @@ jobs:
        - name: 运行更新脚本
          id: run_script
          run: |
-            cd data
             python action.py
        - name: 提交与推送更改
          run: |

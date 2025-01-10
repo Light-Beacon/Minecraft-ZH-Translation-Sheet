@@ -1,6 +1,7 @@
 import json
 import requests
 import re
+import os
 
 PATTERN = re.compile(r"<td>([a-zA-Z\d\s\-]+)</td>\s*<td>([^(<]+)\s*</td>\s*(?:<td>(?:[^<]+)\s*</td>)?</tr>")
 EXTRA_TRANSLATIONS ={
@@ -26,5 +27,5 @@ for en,zh in re.findall(PATTERN,content):
 
 translations.update(EXTRA_TRANSLATIONS)
 
-with open('translations.json','w', encoding='utf-8') as file:
+with open(f'data{os.sep}translations.json','w', encoding='utf-8') as file:
     json.dump(translations, file, ensure_ascii = False)
