@@ -11,7 +11,7 @@ permissions:
 
 jobs:
    update:
-      runs-on: ubuntu-latest
+      runs-on: windows
       steps:
        - name: 签出储存库
          uses: actions/checkout@v4
@@ -29,7 +29,9 @@ jobs:
             git config --local user.name "Hilda Bot"
        - name: 运行更新脚本
          id: run_script
-         run: mkdir datas || cd datas && python action.py
+         run: |
+            cd data
+            python action.py
        - name: 提交与推送更改
          run: |
             git add *
@@ -39,7 +41,7 @@ jobs:
        - name: Upload artifact
          uses: actions/upload-pages-artifact@v3
          with:
-            path: 'datas'
+            path: 'data'
        - name: Deploy to GitHub Pages
          id: deployment
          uses: actions/deploy-pages@v4
