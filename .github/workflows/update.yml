@@ -3,7 +3,13 @@ on:
    schedule:
     - cron:  '0/30 * * * *'
    workflow_dispatch:
-      
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+
 jobs:
    update:
       runs-on: ubuntu-latest
@@ -24,8 +30,13 @@ jobs:
             git config --local user.name "Hilda Bot"
        - name: 运行更新脚本
          id: run_script
-         run: python action.py
-       - name: 提交与推送更改
-         run: |
-            git add *
-            git diff-index --quiet HEAD || git commit -m "update data" && git push
+         run: mkdir datas || cd datas && python action.py
+       - name: Setup Pages
+         uses: actions/configure-pages@v5
+       - name: Upload artifact
+         uses: actions/upload-pages-artifact@v3
+         with:
+            path: 'datas'
+       - name: Deploy to GitHub Pages
+         id: deployment
+         uses: actions/deploy-pages@v4
