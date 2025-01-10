@@ -1,58 +1,28 @@
-name: Generate Pages
-on: 
+name: Check Minecraft Version
+on:
+   schedule:
+    - cron:  '0/30 * * * *'
    workflow_dispatch:
-   push:
-      branches:
-         - main
-
+      
 jobs:
-   generate:
+   check_mcv:
       runs-on: ubuntu-latest
       steps:
-       - name: 签出工程储存库
+       - name: 签出储存库
          uses: actions/checkout@v4
-         with: 
-            path: 'project'
        - name: 配置 Python 环境
          uses: actions/setup-python@v4
          with:
            python-version: 3.11
-       - name: 签出 PageBuilder 储存库
-         uses: actions/checkout@v4
-         with: 
-            repository: 'Light-Beacon/HomepageBuilder'
-            path: 'builder'
-       - name: 创建 Pagebuilder 环境
+       - name: 安装依赖
          run: |
-            cd builder
-            pip install -r requirements.txt
-            pip install .
-            cd ..
-            cd project
-            pip install -r requirements.txt
-       - name: 签出生成文件储存库
-         uses: actions/checkout@v4
-         with: 
-            ref: 'generated'
-            path: 'generated'
-       - name: 删除之前版本
-         run: |
-            cd generated
-            git rm -r generated/* --ignore-unmatch
-            git clean -f
-       - name: 构建页面
-         run: builder build --project ${GITHUB_WORKSPACE}/project/Project/Project.yml --output ${GITHUB_WORKSPACE}/generated/generated -a
-       - name: 配置 GPG 信息
-         uses: crazy-max/ghaction-import-gpg@v6
-         with:
-            gpg_private_key: ${{ secrets.BOT_GPG_PRIVATE_KEY }}
-            git_user_signingkey: true
-            git_commit_gpgsign: true
-            workdir: generated
+            python -m pip install --upgrade pip
+            pip install requests
+       - name: 运行更新脚本
+         id: run_script
+         run: python action.py
        - name: 提交与推送更改
+         if: ${{ env.require_update }}
          run: |
-            cd generated
-            git config --local user.email "bot@bugjump.net"
-            git config --local user.name "Hilda Bot"
             git add *
-            git diff-index --quiet HEAD || git commit -S -m "upload generated pages" && git push
+            git diff-index --quiet HEAD || git commit -S -m "preloaded new version" && git push
