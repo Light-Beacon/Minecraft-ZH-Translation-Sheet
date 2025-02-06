@@ -14,10 +14,10 @@ EXTRA_TRANSLATIONS ={
     "job site": "工作站点",
     "workplace": "工作站点"
 }
-URL = 'https://zh.minecraft.wiki/w/Minecraft_Wiki:%E8%AF%91%E5%90%8D%E6%A0%87%E5%87%86%E5%8C%96'
-content = result = subprocess.run(['curl', URL], text=True, capture_output=True ).stdout
-print(content)
-
+URL = 'https://zh.minecraft.wiki/w/Minecraft_Wiki:译名标准化?variant=zh-cn'
+print('Getting translations from Minecraft Wiki')
+content = result = subprocess.run(['curl', URL], text=True, capture_output=True, check=True ).stdout
+print('Parsing translations')
 translations = {}
 for en,zh in re.findall(PATTERN,content):
     en = en.lower()
@@ -26,8 +26,7 @@ for en,zh in re.findall(PATTERN,content):
         translations[en] = en
     else:
         translations[en] = zh
-
 translations.update(EXTRA_TRANSLATIONS)
-
+print('Writing translations to file')
 with open(f'data{os.sep}translations.json','w', encoding='utf-8') as file:
     json.dump(translations, file, ensure_ascii = False)
