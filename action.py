@@ -15,11 +15,12 @@ EXTRA_TRANSLATIONS ={
     "workplace": "工作站点"
 }
 URL = 'https://zh.minecraft.wiki/w/Minecraft_Wiki:译名标准化?variant=zh-cn'
-print('Getting translations from Minecraft Wiki')
-content = result = subprocess.run(['curl', URL], text=True, capture_output=True, check=True ).stdout
-print('Parsing translations')
+print('Getting translations from Minecraft Wiki...')
+result = subprocess.run(['curl', '-H', 'Accept-Charset: utf-8', URL],
+                         text=True, capture_output=True, check=True ).stdout
+print('Parsing translations...')
 translations = {}
-for en,zh in re.findall(PATTERN,content):
+for en,zh in re.findall(PATTERN, result):
     en = en.lower()
     zh = zh.replace("\n","")
     if zh == '-':
@@ -27,6 +28,7 @@ for en,zh in re.findall(PATTERN,content):
     else:
         translations[en] = zh
 translations.update(EXTRA_TRANSLATIONS)
-print('Writing translations to file')
+print('Writing translations to file...')
 with open(f'data{os.sep}translations.json','w', encoding='utf-8') as file:
     json.dump(translations, file, ensure_ascii = False)
+print('Done.')
