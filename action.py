@@ -1,7 +1,7 @@
 import json
-import requests
 import re
 import os
+import subprocess
 
 PATTERN = re.compile(r"<td>([a-zA-Z\d\s\-]+)</td>\s*<td>([^(<]+)\s*</td>\s*(?:<td>(?:[^<]+)\s*</td>)?</tr>")
 EXTRA_TRANSLATIONS ={
@@ -14,8 +14,10 @@ EXTRA_TRANSLATIONS ={
     "job site": "工作站点",
     "workplace": "工作站点"
 }
+URL = 'https://zh.minecraft.wiki/w/Minecraft_Wiki:%E8%AF%91%E5%90%8D%E6%A0%87%E5%87%86%E5%8C%96'
+content = result = subprocess.run(['curl', URL], text=True, capture_output=True ).stdout
+print(content)
 
-content = requests.get('https://zh.minecraft.wiki/w/Minecraft_Wiki:%E8%AF%91%E5%90%8D%E6%A0%87%E5%87%86%E5%8C%96').content.decode("utf-8")
 translations = {}
 for en,zh in re.findall(PATTERN,content):
     en = en.lower()

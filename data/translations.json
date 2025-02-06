@@ -1,1 +1,10 @@
-{"data value": "数据值", "block state": "方块状态", "argument": "参数", "parameter": "参数", "sprite": "精灵图", "variant": "变种", "job site": "工作站点", "workplace": "工作站点"}
+{
+    "data value": "数据值",
+    "block state": "方块状态",
+    "argument": "参数",
+    "parameter": "参数",
+    "sprite": "精灵图",
+    "variant": "变种",
+    "job site": "工作站点",
+    "workplace": "工作站点"
+}
