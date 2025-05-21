@@ -30,5 +30,5 @@ for en,zh in re.findall(PATTERN, result):
 translations.update(EXTRA_TRANSLATIONS)
 print('Writing translations to file...')
 with open(f'data{os.sep}translations.json','w', encoding='utf-8') as file:
-    json.dump(translations, file, ensure_ascii = False)
+    json.dump(translations, file, ensure_ascii=False, indent=2)
 print('Done.')
