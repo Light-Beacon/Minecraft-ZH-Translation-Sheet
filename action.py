@@ -5,6 +5,7 @@ import subprocess
 
 PATTERN = re.compile(r"<td>([a-zA-Z\d\s\-]+)</td>\s*<td>([^(<]+)\s*</td>\s*(?:<td>(?:[^<]+)\s*</td>)?</tr>")
 EXTRA_TRANSLATIONS ={
+    "shelf": "展示架",
     "data value": "数据值",
     "block state": "方块状态",
     "argument": "参数",
